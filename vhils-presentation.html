@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VHILS — L'Art de la Destruction</title>
+    <style>
+        @font-face {
+            font-family: 'Brutalist';
+            src: local('Courier New'), local('Courier');
+        }
+
+        :root {
+            --concrete: #d4cfc4;
+            --dust: #a89f91;
+            --shadow: #1a1a1a;
+            --rust: #8b4513;
+            --blood: #6b1c1c;
+            --crack: #3d3428;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--shadow);
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            color: var(--concrete);
+        }
+
+        .slideshow {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            padding: 60px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* TEXTURE OVERLAYS */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.03) 2px,
+                    rgba(0,0,0,0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(255,255,255,0.01) 100px,
+                    rgba(255,255,255,0.01) 101px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 3;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* SLIDE 1 - TITLE */
+        .slide-title {
+            background:
+                linear-gradient(135deg, #2a2520 0%, #1a1612 50%, #0d0b09 100%);
+        }
+
+        .title-container {
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: clamp(80px, 15vw, 200px);
+            font-weight: 900;
+            letter-spacing: -8px;
+            line-height: 0.85;
+            color: var(--concrete);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-title::before {
+            content: 'VHILS';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            color: var(--rust);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .main-title span {
+            display: inline-block;
+            animation: chisel 0.1s ease-in-out;
+        }
+
+        .subtitle {
+            font-size: clamp(14px, 2vw, 22px);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            color: var(--dust);
+            margin-top: 30px;
+            font-weight: 300;
+        }
+
+        .subtitle::before,
+        .subtitle::after {
+            content: '———';
+            margin: 0 15px;
+            color: var(--rust);
+        }
+
+        .tagline {
+            margin-top: 50px;
+            font-size: clamp(11px, 1.2vw, 16px);
+            color: var(--dust);
+            opacity: 0.6;
+            letter-spacing: 3px;
+        }
+
+        /* SLIDE 2 - BIO */
+        .slide-bio {
+            background: linear-gradient(180deg, #1e1b17 0%, #12100d 100%);
+        }
+
+        .bio-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .bio-left {
+            border-right: 1px solid var(--crack);
+            padding-right: 40px;
+        }
+
+        .bio-name {
+            font-size: 14px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--rust);
+            margin-bottom: 20px;
+        }
+
+        .bio-real-name {
+            font-size: clamp(24px, 3vw, 42px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: var(--concrete);
+        }
+
+        .bio-facts {
+            list-style: none;
+        }
+
+        .bio-facts li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(61, 52, 40, 0.4);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .bio-facts li strong {
+            color: var(--rust);
+            display: block;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .bio-text {
+            font-size: clamp(14px, 1.4vw, 18px);
+            line-height: 2;
+            color: var(--dust);
+        }
+
+        .bio-text p {
+            margin-bottom: 20px;
+            text-indent: 30px;
+        }
+
+        .bio-text .highlight {
+            color: var(--concrete);
+            font-weight: 700;
+            border-bottom: 2px solid var(--rust);
+            padding-bottom: 2px;
+        }
+
+        /* SLIDE 3 - TECHNIQUE */
+        .slide-technique {
+            background: linear-gradient(225deg, #221e1a 0%, #0f0d0b 100%);
+        }
+
+        .technique-header {
+            font-size: clamp(36px, 5vw, 72px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .technique-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--rust);
+        }
+
+        .techniques-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .technique-card {
+            background: rgba(42, 37, 32, 0.5);
+            border: 1px solid var(--crack);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .technique-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--rust);
+        }
+
+        .technique-card::before {
+            content: attr(data-num);
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 100px;
+            font-weight: 900;
+            color: rgba(139, 69, 19, 0.08);
+            line-height: 1;
+        }
+
+        .technique-card h3 {
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--rust);
+            margin-bottom: 15px;
+        }
+
+        .technique-card p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--dust);
+        }
+
+        .technique-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* SLIDE 4 - OEUVRES */
+        .slide-works {
+            background: linear-gradient(180deg, #1c1915 0%, #0a0908 100%);
+        }
+
+        .works-header {
+            font-size: clamp(28px, 4vw, 56px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 50px;
+        }
+
+        .works-header span {
+            color: var(--rust);
+        }
+
+        .works-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .work-item {
+            display: flex;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(30, 27, 23, 0.8);
+            border-left: 3px solid var(--rust);
+            transition: background 0.3s ease;
+        }
+
+        .work-item:hover {
+            background: rgba(42, 37, 32, 0.8);
+        }
+
+        .work-year {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--rust);
+            white-space: nowrap;
+            padding-top: 4px;
+        }
+
+        .work-info h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--concrete);
+            font-weight: 700;
+        }
+
+        .work-info p {
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--dust);
+        }
+
+        .work-location {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--crack);
+            border: 1px solid var(--crack);
+            padding: 3px 8px;
+        }
+
+        /* SLIDE 5 - PHILOSOPHY */
+        .slide-philosophy {
+            background: linear-gradient(135deg, #1f1c18 0%, #0b0a08 100%);
+        }
+
+        .philosophy-quote {
+            font-size: clamp(22px, 3.5vw, 48px);
+            line-height: 1.5;
+            font-weight: 300;
+            color: var(--concrete);
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .philosophy-quote::before {
+            content: '"';
+            position: absolute;
+            top: -30px;
+            left: -20px;
+            font-size: 150px;
+            color: var(--rust);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .philosophy-quote em {
+            color: var(--rust);
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        .philosophy-author {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--dust);
+        }
+
+        .philosophy-context {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--crack);
+            font-size: 14px;
+            line-height: 2;
+            color: var(--dust);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* SLIDE 6 - INTERNATIONAL */
+        .slide-international {
+            background: linear-gradient(180deg, #211e19 0%, #0c0a08 100%);
+        }
+
+        .intl-header {
+            font-size: clamp(24px, 3.5vw, 48px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 40px;
+        }
+
+        .intl-header span {
+            color: var(--rust);
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .city-block {
+            text-align: center;
+            padding: 25px 15px;
+            border: 1px solid rgba(61, 52, 40, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .city-block:hover {
+            border-color: var(--rust);
+            background: rgba(139, 69, 19, 0.05);
+        }
+
+        .city-block .city-name {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--concrete);
+            margin-bottom: 8px;
+        }
+
+        .city-block .city-country {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--dust);
+            text-transform: uppercase;
+        }
+
+        .city-block .city-symbol {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: block;
+            opacity: 0.7;
+        }
+
+        /* SLIDE 7 - EXPOSITIONS */
+        .slide-expos {
+            background: linear-gradient(225deg, #1e1b16 0%, #090807 100%);
+        }
+
+        .expos-header {
+            font-size: clamp(24px, 3.5vw, 48px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 40px;
+        }
+
+        .expos-timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .expos-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--rust), transparent);
+        }
+
+        .expo-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+
+        .expo-item::before {
+            content: '';
+            position: absolute;
+            left: -44px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            background: var(--rust);
+            transform: rotate(45deg);
+        }
+
+        .expo-year {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--rust);
+            margin-bottom: 5px;
+        }
+
+        .expo-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--concrete);
+            margin-bottom: 4px;
+        }
+
+        .expo-place {
+            font-size: 12px;
+            color: var(--dust);
+            letter-spacing: 1px;
+        }
+
+        /* SLIDE 8 - CONCLUSION */
+        .slide-conclusion {
+            background: linear-gradient(135deg, #251f1a 0%, #0a0908 100%);
+        }
+
+        .conclusion-content {
+            text-align: center;
+        }
+
+        .conclusion-title {
+            font-size: clamp(32px, 5vw, 72px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            margin-bottom: 30px;
+            line-height: 1.1;
+        }
+
+        .conclusion-title span {
+            display: block;
+            color: var(--rust);
+            font-size: 0.5em;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+        }
+
+        .conclusion-text {
+            font-size: clamp(14px, 1.5vw, 20px);
+            line-height: 2;
+            color: var(--dust);
+            max-width: 750px;
+            margin: 0 auto 40px;
+        }
+
+        .conclusion-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .conclusion-link {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--dust);
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 1px solid var(--crack);
+            transition: all 0.3s ease;
+        }
+
+        .conclusion-link:hover {
+            border-color: var(--rust);
+            color: var(--concrete);
+        }
+
+        /* NAVIGATION */
+        .nav {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 30px;
+            height: 4px;
+            background: var(--crack);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--rust);
+            width: 50px;
+        }
+
+        .nav-dot:hover {
+            background: var(--dust);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: var(--crack);
+            z-index: 100;
+        }
+
+        .slide-counter .current {
+            color: var(--concrete);
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        .nav-arrows {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            pointer-events: none;
+        }
+
+        .nav-arrow {
+            pointer-events: all;
+            background: none;
+            border: 1px solid var(--crack);
+            color: var(--dust);
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+        }
+
+        .nav-arrow:hover {
+            border-color: var(--rust);
+            color: var(--concrete);
+        }
+
+        .brand-mark {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--crack);
+            z-index: 100;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* ANIMATIONS */
+        @keyframes chisel {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-1px, 1px); }
+            50% { transform: translate(1px, -1px); }
+            75% { transform: translate(-1px, -1px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide.active .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.2s; }
+        .reveal-delay-2 { transition-delay: 0.4s; }
+        .reveal-delay-3 { transition-delay: 0.6s; }
+        .reveal-delay-4 { transition-delay: 0.8s; }
+
+        /* GRAIN EFFECT */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .bio-layout {
+                grid-template-columns: 1fr;
+            }
+            .bio-left {
+                border-right: none;
+                border-bottom: 1px solid var(--crack);
+                padding-right: 0;
+                padding-bottom: 30px;
+            }
+            .techniques-grid {
+                grid-template-columns: 1fr;
+            }
+            .works-list {
+                grid-template-columns: 1fr;
+            }
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .slide {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grain"></div>
+    <div class="brand-mark">STREET ART — PORTUGAL</div>
+
+    <div class="slide-counter">
+        <span class="current">01</span> / 08
+    </div>
+
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="prevSlide()">←</button>
+        <button class="nav-arrow" onclick="nextSlide()">→</button>
+    </div>
+
+    <div class="slideshow">
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide slide-title active">
+            <div class="slide-content title-container">
+                <div class="main-title reveal">VHILS</div>
+                <div class="subtitle reveal reveal-delay-1">L'Art de la Destruction</div>
+                <div class="tagline reveal reveal-delay-2">ALEXANDRE FARTO &bull; NÉ EN 1987 &bull; LISBONNE, PORTUGAL</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: BIO -->
+        <div class="slide slide-bio">
+            <div class="slide-content bio-layout">
+                <div class="bio-left reveal">
+                    <div class="bio-name">L'artiste</div>
+                    <div class="bio-real-name">Alexandre Manuel Dias Farto</div>
+                    <ul class="bio-facts">
+                        <li>
+                            <strong>Naissance</strong>
+                            1987, Seixal, Portugal
+                        </li>
+                        <li>
+                            <strong>Pseudonyme</strong>
+                            VHILS
+                        </li>
+                        <li>
+                            <strong>Formation</strong>
+                            University of the Arts London
+                        </li>
+                        <li>
+                            <strong>Discipline</strong>
+                            Street Art / Art Urbain
+                        </li>
+                        <li>
+                            <strong>Mouvement</strong>
+                            Art Contemporain Destructif
+                        </li>
+                    </ul>
+                </div>
+                <div class="bio-text reveal reveal-delay-1">
+                    <p>Alexandre Farto, connu sous le nom de <span class="highlight">VHILS</span>, est un artiste visuel portugais qui a révolutionné le street art en développant une technique unique de <span class="highlight">soustraction</span> plutôt que d'addition.</p>
+                    <p>Grandissant dans la banlieue industrielle de Lisbonne après la Révolution des Œillets, il est fasciné par les <span class="highlight">murs décrépits</span> et les couches d'affiches qui racontent l'histoire urbaine. Dès 13 ans, il commence le graffiti avant de développer sa propre voie artistique.</p>
+                    <p>En 2008, une de ses œuvres est exposée à côté d'une pièce de <span class="highlight">Banksy</span> lors du Cans Festival à Londres, propulsant sa carrière internationale.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: TECHNIQUE -->
+        <div class="slide slide-technique">
+            <div class="slide-content">
+                <div class="technique-header reveal">Processus Créatif</div>
+                <div class="techniques-grid">
+                    <div class="technique-card reveal reveal-delay-1" data-num="01">
+                        <span class="technique-icon">⚒</span>
+                        <h3>Gravure Murale</h3>
+                        <p>À l'aide de burins et de marteaux, VHILS creuse directement dans les murs, retirant couche après couche d'enduit, de plâtre et de peinture pour révéler des portraits monumentaux.</p>
+                    </div>
+                    <div class="technique-card reveal reveal-delay-2" data-num="02">
+                        <span class="technique-icon">💥</span>
+                        <h3>Explosifs</h3>
+                        <p>Pour certaines œuvres à grande échelle, il utilise des micro-charges explosives contrôlées qui détachent la surface du mur selon un motif prédéfini, créant des portraits en quelques secondes.</p>
+                    </div>
+                    <div class="technique-card reveal reveal-delay-3" data-num="03">
+                        <span class="technique-icon">⚡</span>
+                        <h3>Acide & Eau de Javel</h3>
+                        <p>Sur des surfaces métalliques ou des panneaux publicitaires, il applique des agents chimiques qui rongent sélectivement la matière, créant des dégradés subtils et des textures organiques.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: OEUVRES -->
+        <div class="slide slide-works">
+            <div class="slide-content">
+                <div class="works-header reveal">Œuvres <span>Majeures</span></div>
+                <div class="works-list">
+                    <div class="work-item reveal reveal-delay-1">
+                        <div class="work-year">2008</div>
+                        <div class="work-info">
+                            <h4>Scratching the Surface</h4>
+                            <p>Série fondatrice où VHILS grave des portraits dans les murs de Lisbonne, révélant les strates historiques de la ville.</p>
+                            <span class="work-location">Lisbonne, Portugal</span>
+                        </div>
+                    </div>
+                    <div class="work-item reveal reveal-delay-2">
+                        <div class="work-year">2014</div>
+                        <div class="work-info">
+                            <h4>Dissection</h4>
+                            <p>Installation immersive explorant la déconstruction de l'identité à travers des portraits sculptés en couches de matériaux urbains empilés.</p>
+                            <span class="work-location">Hong Kong</span>
+                        </div>
+                    </div>
+                    <div class="work-item reveal reveal-delay-3">
+                        <div class="work-year">2019</div>
+                        <div class="work-info">
+                            <h4>Ethereal</h4>
+                            <p>Série utilisant la pyrotechnie et les explosifs pour créer des portraits éphémères capturés en vidéo haute vitesse.</p>
+                            <span class="work-location">Worldwide</span>
+                        </div>
+                    </div>
+                    <div class="work-item reveal reveal-delay-4">
+                        <div class="work-year">2021</div>
+                        <div class="work-info">
+                            <h4>Homenagem aos Profissionais de Saúde</h4>
+                            <p>Immense portrait d'une soignante gravé sur un mur d'hôpital à Lisbonne en hommage aux travailleurs de santé pendant la pandémie.</p>
+                            <span class="work-location">Hospital São José, Lisbonne</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: PHILOSOPHY -->
+        <div class="slide slide-philosophy">
+            <div class="slide-content">
+                <div class="philosophy-quote reveal">
+                    Je ne crée pas en <em>ajoutant</em>, je crée en <em>enlevant</em>. Chaque coup de burin révèle ce qui était déjà là, caché sous la surface.
+                </div>
+                <div class="philosophy-author reveal reveal-delay-1">— VHILS</div>
+                <div class="philosophy-context reveal reveal-delay-2">
+                    Sa philosophie artistique repose sur l'idée que la beauté existe déjà dans les murs de nos villes. L'artiste ne fait que la libérer en retirant les couches superflues, comme un archéologue urbain mettant au jour les mémoires enfouies de l'espace public.
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: INTERNATIONAL -->
+        <div class="slide slide-international">
+            <div class="slide-content">
+                <div class="intl-header reveal">Rayonnement <span>Mondial</span></div>
+                <div class="cities-grid">
+                    <div class="city-block reveal reveal-delay-1">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Lisbonne</div>
+                        <div class="city-country">Portugal</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-1">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Londres</div>
+                        <div class="city-country">Royaume-Uni</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-2">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Paris</div>
+                        <div class="city-country">France</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-2">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Rio</div>
+                        <div class="city-country">Brésil</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-3">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Hong Kong</div>
+                        <div class="city-country">Chine</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-3">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Los Angeles</div>
+                        <div class="city-country">États-Unis</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-4">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Sydney</div>
+                        <div class="city-country">Australie</div>
+                    </div>
+                    <div class="city-block reveal reveal-delay-4">
+                        <span class="city-symbol">◉</span>
+                        <div class="city-name">Moscou</div>
+                        <div class="city-country">Russie</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: EXPOSITIONS -->
+        <div class="slide slide-expos">
+            <div class="slide-content">
+                <div class="expos-header reveal">Expositions Clés</div>
+                <div class="expos-timeline">
+                    <div class="expo-item reveal reveal-delay-1">
+                        <div class="expo-year">2008</div>
+                        <div class="expo-name">Cans Festival</div>
+                        <div class="expo-place">Leake Street Tunnel, Londres — aux côtés de Banksy</div>
+                    </div>
+                    <div class="expo-item reveal reveal-delay-1">
+                        <div class="expo-year">2011</div>
+                        <div class="expo-name">Husk</div>
+                        <div class="expo-place">Lazarides Gallery, Londres — première exposition solo majeure</div>
+                    </div>
+                    <div class="expo-item reveal reveal-delay-2">
+                        <div class="expo-year">2014</div>
+                        <div class="expo-name">Vestiges</div>
+                        <div class="expo-place">Musée EDP, Lisbonne — rétrospective institutionnelle</div>
+                    </div>
+                    <div class="expo-item reveal reveal-delay-2">
+                        <div class="expo-year">2016</div>
+                        <div class="expo-name">Annihilation</div>
+                        <div class="expo-place">Palais de Tokyo, Paris</div>
+                    </div>
+                    <div class="expo-item reveal reveal-delay-3">
+                        <div class="expo-year">2019</div>
+                        <div class="expo-name">Metamorphosis</div>
+                        <div class="expo-place">MAAT, Lisbonne — exploration multimédia</div>
+                    </div>
+                    <div class="expo-item reveal reveal-delay-3">
+                        <div class="expo-year">2022</div>
+                        <div class="expo-name">Imprint</div>
+                        <div class="expo-place">Hong Kong Contemporary Art Foundation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: CONCLUSION -->
+        <div class="slide slide-conclusion">
+            <div class="slide-content conclusion-content">
+                <div class="conclusion-title reveal">
+                    <span>En résumé</span>
+                    Détruire pour Révéler
+                </div>
+                <div class="conclusion-text reveal reveal-delay-1">
+                    VHILS redéfinit les frontières du street art en transformant la destruction en acte créatif. Ses œuvres sont des palimpsestes urbains qui questionnent notre rapport à la ville, à la mémoire collective et à l'identité. Chaque mur qu'il touche devient un témoignage vivant de notre époque.
+                </div>
+                <div class="conclusion-links reveal reveal-delay-2">
+                    <a href="https://vfrfranco.com" class="conclusion-link" target="_blank">Site Officiel</a>
+                    <a href="https://www.instagram.com/vfrfranco/" class="conclusion-link" target="_blank">Instagram</a>
+                    <a href="https://underdogsgallery.com" class="conclusion-link" target="_blank">Underdogs Gallery</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION DOTS -->
+    <div class="nav">
+        <button class="nav-dot active" onclick="goToSlide(0)"></button>
+        <button class="nav-dot" onclick="goToSlide(1)"></button>
+        <button class="nav-dot" onclick="goToSlide(2)"></button>
+        <button class="nav-dot" onclick="goToSlide(3)"></button>
+        <button class="nav-dot" onclick="goToSlide(4)"></button>
+        <button class="nav-dot" onclick="goToSlide(5)"></button>
+        <button class="nav-dot" onclick="goToSlide(6)"></button>
+        <button class="nav-dot" onclick="goToSlide(7)"></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 8;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.nav-dot');
+        const counter = document.querySelector('.slide-counter .current');
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            counter.textContent = String(currentSlide + 1).padStart(2, '0');
+        }
+
+        function nextSlide() {
+            goToSlide((currentSlide + 1) % totalSlides);
+        }
+
+        function prevSlide() {
+            goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        });
+
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) nextSlide();
+                else prevSlide();
+            }, 50);
+        });
+    </script>
+</body>
+</html>
