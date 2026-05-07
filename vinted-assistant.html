@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant Vinted - Vente Rapide</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f172a;
+      --card: #111827;
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --line: #273449;
+      --ok: #22c55e;
+      --accent: #38bdf8;
+      --warning: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Segoe UI, Roboto, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #15233b, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .container {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: color-mix(in srgb, var(--card) 90%, black 10%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      margin-bottom: 0.35rem;
+    }
+
+    .sub {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .note {
+      margin-top: 0.85rem;
+      border-left: 3px solid var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #c6eaff;
+    }
+
+    form {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
+    input, select, textarea, button {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #0a1322;
+      color: var(--text);
+      padding: 0.6rem 0.7rem;
+      font-size: 0.92rem;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.1s ease, border-color 0.2s ease;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-main {
+      background: color-mix(in srgb, var(--ok) 28%, #0b1a13);
+      border-color: #215738;
+    }
+
+    .result-grid {
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .result h3 {
+      margin-bottom: 0.55rem;
+      font-size: 0.97rem;
+      color: #9ed9ff;
+    }
+
+    .result pre, .result .box {
+      white-space: pre-wrap;
+      line-height: 1.45;
+      background: #0a1322;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.75rem;
+      min-height: 92px;
+      font-size: 0.88rem;
+      color: #d5e4f6;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .copy {
+      font-size: 0.78rem;
+      padding: 0.32rem 0.6rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.76rem;
+      color: #fdd68f;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 999px;
+      padding: 0.28rem 0.62rem;
+      margin-top: 0.6rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>Assistant Vinted - vente rapide</h1>
+      <p class="sub">
+        Cet outil ne publie pas automatiquement sur Vinted. Il te fait gagner du temps pour creer des annonces
+        optimisees: titre, description, prix conseille, messages et plan d'action.
+      </p>
+      <p class="note">
+        Conseil: de bonnes photos + reponse rapide + prix realiste = plus de ventes.
+      </p>
+    </section>
+
+    <section class="card">
+      <form id="vinted-form">
+        <div class="grid">
+          <label>
+            Type d'article
+            <input id="itemType" placeholder="Ex: veste, sneakers, robe..." required>
+          </label>
+          <label>
+            Marque
+            <input id="brand" placeholder="Ex: Nike, Zara, Uniqlo" required>
+          </label>
+          <label>
+            Categorie
+            <select id="category">
+              <option value="streetwear">Streetwear / tendance</option>
+              <option value="sport">Sport</option>
+              <option value="casual">Casual</option>
+              <option value="vintage">Vintage</option>
+              <option value="luxe">Luxe accessible</option>
+            </select>
+          </label>
+          <label>
+            Taille
+            <input id="size" placeholder="Ex: S, M, 38, 42">
+          </label>
+          <label>
+            Couleur
+            <input id="color" placeholder="Ex: noir, bleu marine">
+          </label>
+          <label>
+            Etat
+            <select id="condition">
+              <option value="new">Neuf avec etiquette</option>
+              <option value="very-good">Tres bon etat</option>
+              <option value="good">Bon etat</option>
+              <option value="correct">Etat correct</option>
+            </select>
+          </label>
+          <label>
+            Prix d'achat (EUR)
+            <input id="buyPrice" type="number" min="0" step="1" placeholder="Ex: 90">
+          </label>
+          <label>
+            Prix minimum accepte (EUR)
+            <input id="minPrice" type="number" min="0" step="1" placeholder="Ex: 25">
+          </label>
+          <label>
+            Urgence de vente
+            <select id="urgency">
+              <option value="normal">Normale</option>
+              <option value="fast">Rapide</option>
+              <option value="very-fast">Tres rapide</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          Defauts / details a signaler
+          <textarea id="defects" placeholder="Ex: micro trace sur manche droite"></textarea>
+        </label>
+        <label>
+          Mots cles (separes par virgules)
+          <input id="keywords" placeholder="Ex: minimaliste, oversize, urbain">
+        </label>
+        <button class="btn-main" type="submit">Generer mon pack annonce</button>
+      </form>
+    </section>
+
+    <section class="result-grid">
+      <article class="card result">
+        <div class="row">
+          <h3>Titre annonce</h3>
+          <button class="copy" data-copy="titleOut">Copier</button>
+        </div>
+        <pre id="titleOut"></pre>
+      </article>
+
+      <article class="card result">
+        <div class="row">
+          <h3>Description prete a coller</h3>
+          <button class="copy" data-copy="descriptionOut">Copier</button>
+        </div>
+        <pre id="descriptionOut"></pre>
+      </article>
+
+      <article class="card result">
+        <div class="row">
+          <h3>Prix conseille</h3>
+          <button class="copy" data-copy="pricingOut">Copier</button>
+        </div>
+        <pre id="pricingOut"></pre>
+      </article>
+
+      <article class="card result">
+        <div class="row">
+          <h3>Messages ventes rapides</h3>
+          <button class="copy" data-copy="messageOut">Copier</button>
+        </div>
+        <pre id="messageOut"></pre>
+      </article>
+
+      <article class="card result">
+        <div class="row">
+          <h3>Checklist photo + publication</h3>
+          <button class="copy" data-copy="checklistOut">Copier</button>
+        </div>
+        <pre id="checklistOut"></pre>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("vinted-form");
+    const outputs = {
+      titleOut: document.getElementById("titleOut"),
+      descriptionOut: document.getElementById("descriptionOut"),
+      pricingOut: document.getElementById("pricingOut"),
+      messageOut: document.getElementById("messageOut"),
+      checklistOut: document.getElementById("checklistOut")
+    };
+
+    const categoryBoost = {
+      streetwear: 1.08,
+      sport: 1.05,
+      casual: 1.0,
+      vintage: 1.12,
+      luxe: 1.16
+    };
+
+    const conditionRate = {
+      new: 0.68,
+      "very-good": 0.58,
+      good: 0.48,
+      correct: 0.37
+    };
+
+    const conditionLabel = {
+      new: "Neuf avec etiquette",
+      "very-good": "Tres bon etat",
+      good: "Bon etat",
+      correct: "Etat correct"
+    };
+
+    const urgencyCut = {
+      normal: 1,
+      fast: 0.95,
+      "very-fast": 0.9
+    };
+
+    function clampTitle(text, max = 64) {
+      return text.length <= max ? text : text.slice(0, max - 1).trimEnd() + "...";
+    }
+
+    function euro(v) {
+      return `${Math.max(0, Math.round(v))} EUR`;
+    }
+
+    function computePrice(buy, category, condition, urgency, minAccepted) {
+      const base = (buy || 28) * (conditionRate[condition] || 0.5) * (categoryBoost[category] || 1);
+      const proposed = Math.round(base * (urgencyCut[urgency] || 1));
+      const floorRaw = Math.round(proposed * 0.88);
+      const floor = Math.max(minAccepted || 0, floorRaw);
+      return { proposed, floor };
+    }
+
+    function buildSchedule(urgency) {
+      if (urgency === "very-fast") {
+        return [
+          "- Jour 1: publier a 18h-21h",
+          "- Jour 2: baisser de 5 a 8%",
+          "- Jour 4: relancer avec nouvelles photos",
+          "- Jour 6: reposter avec titre simplifie"
+        ].join("\n");
+      }
+
+      if (urgency === "fast") {
+        return [
+          "- Jour 1: publier a 18h-21h",
+          "- Jour 3: activer offre groupage",
+          "- Jour 5: baisser de 3 a 5%",
+          "- Jour 8: reposter"
+        ].join("\n");
+      }
+
+      return [
+        "- Jour 1: publier a 19h",
+        "- Jour 4: repondre a tous les likes avec offre douce",
+        "- Jour 7: verifier prix vs marche",
+        "- Jour 10: reposter"
+      ].join("\n");
+    }
+
+    function buildMessages(itemType, finalFloor) {
+      return [
+        "Reponse acheteur:",
+        `"Salut ! Oui toujours dispo. Envoi rapide et article propre. Si tu veux je peux expedier demain."`,
+        "",
+        "Contre-offre:",
+        `"Merci pour ta proposition. Je peux faire ${euro(finalFloor)} au plus bas, expedition rapide incluse."`,
+        "",
+        "Upsell lot:",
+        `"Si tu prends 2 articles, je te fais une remise supplementaire."`
+      ].join("\n");
+    }
+
+    function renderFromForm(values) {
+      const itemType = values.itemType.trim();
+      const brand = values.brand.trim();
+      const size = values.size.trim() || "taille non precisee";
+      const color = values.color.trim() || "couleur non precisee";
+      const condition = values.condition;
+      const defects = values.defects.trim();
+      const keywords = values.keywords
+        .split(",")
+        .map((word) => word.trim())
+        .filter(Boolean);
+
+      const buy = Number(values.buyPrice) || 0;
+      const minAccepted = Number(values.minPrice) || 0;
+      const urgency = values.urgency;
+      const category = values.category;
+
+      const { proposed, floor } = computePrice(buy, category, condition, urgency, minAccepted);
+      const title = clampTitle(`${itemType} ${brand} ${size} ${conditionLabel[condition]}`.replace(/\s+/g, " ").trim());
+
+      const descriptionLines = [
+        `${itemType} ${brand} en ${conditionLabel[condition].toLowerCase()}.`,
+        `Taille: ${size}. Couleur: ${color}.`,
+        defects ? `A noter: ${defects}.` : "Aucun defaut majeur signale.",
+        "Article propre, pret a etre envoye rapidement.",
+        keywords.length ? `Mots cles: ${keywords.join(", ")}.` : "Mots cles: style quotidien, bonne affaire."
+      ];
+
+      outputs.titleOut.textContent = title;
+      outputs.descriptionOut.textContent = descriptionLines.join("\n");
+
+      outputs.pricingOut.textContent = [
+        `Prix conseille de publication: ${euro(proposed)}`,
+        `Prix plancher de negociation: ${euro(floor)}`,
+        "Astuce: accepte une offre proche du plancher apres 24h sans interaction."
+      ].join("\n");
+
+      outputs.messageOut.textContent = buildMessages(itemType, floor);
+      outputs.checklistOut.textContent = [
+        "Photos a faire:",
+        "- Face, dos, details marque, etiquette taille, zoom matiere",
+        "- Photo en lumiere naturelle + fond neutre",
+        defects ? `- Montrer le defaut: ${defects}` : "- Montrer les points forts (etat, coupe, details)",
+        "",
+        "Plan publication:",
+        buildSchedule(urgency)
+      ].join("\n");
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      renderFromForm(Object.fromEntries(new FormData(form).entries()));
+    });
+
+    document.querySelectorAll(".copy").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const targetId = button.getAttribute("data-copy");
+        const text = outputs[targetId].textContent.trim();
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+        const old = button.textContent;
+        button.textContent = "Copie";
+        setTimeout(() => {
+          button.textContent = old;
+        }, 1000);
+      });
+    });
+
+    // Pre-fill once to show immediate output.
+    renderFromForm({
+      itemType: "Veste",
+      brand: "Nike",
+      category: "streetwear",
+      size: "M",
+      color: "Noir",
+      condition: "very-good",
+      buyPrice: "80",
+      minPrice: "25",
+      urgency: "fast",
+      defects: "",
+      keywords: "sport, urbain, oversize"
+    });
+  </script>
+</body>
+</html>
