@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Bonnes Affaires Auto - Multi Plateformes</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1220;
+      --panel: #111a2c;
+      --line: #26354e;
+      --text: #e2e8f0;
+      --muted: #9aa9c2;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #f87171;
+      --accent: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #17233b, var(--bg) 42%);
+      color: var(--text);
+      padding: 1rem 0.9rem 2.5rem;
+    }
+
+    .wrap {
+      width: min(1150px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.2rem, 3.6vw, 1.9rem);
+      margin-bottom: 0.4rem;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.92rem;
+    }
+
+    .notice {
+      margin-top: 0.7rem;
+      border-left: 3px solid var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+      color: #caebff;
+      padding: 0.62rem 0.78rem;
+      border-radius: 8px;
+      font-size: 0.84rem;
+    }
+
+    form {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.32rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    input, select, button, textarea {
+      background: #0a1425;
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 9px;
+      padding: 0.56rem 0.62rem;
+      font-size: 0.9rem;
+    }
+
+    .checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.2rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: #0a1425;
+      border: 1px solid var(--line);
+      padding: 0.35rem 0.52rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: #c1d1ea;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: rgba(34, 197, 94, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+    th, td {
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 0.5rem 0.45rem;
+      text-align: left;
+    }
+
+    th {
+      color: #b7c8e2;
+      background: #0e1a2f;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .score {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .good {
+      color: var(--good);
+    }
+
+    .warn {
+      color: var(--warn);
+    }
+
+    .bad {
+      color: var(--bad);
+    }
+
+    .summary {
+      display: grid;
+      gap: 0.7rem;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0a1425;
+      padding: 0.7rem;
+    }
+
+    .metric .k {
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .metric .v {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Bot Bonnes Affaires Vehicules</h1>
+      <p class="muted">
+        Leboncoin · Facebook Marketplace · AutoScout · mobile.de.
+        Ce bot detecte les annonces sous le prix de marche et estime les frais potentiels
+        pour trouver les meilleures opportunites.
+      </p>
+      <p class="notice">
+        L'outil ne scrape pas automatiquement les plateformes. Tu colles les annonces a la main
+        (ou depuis tes recherches sauvegardees), puis il calcule le potentiel de revente.
+      </p>
+    </section>
+
+    <section class="card">
+      <form id="deal-form">
+        <div class="grid">
+          <label>
+            Plateforme
+            <select id="platform">
+              <option>Leboncoin</option>
+              <option>Facebook Marketplace</option>
+              <option>AutoScout</option>
+              <option>mobile.de</option>
+            </select>
+          </label>
+          <label>
+            Marque
+            <input id="brand" placeholder="Ex: Peugeot" required>
+          </label>
+          <label>
+            Modele
+            <input id="model" placeholder="Ex: 208" required>
+          </label>
+          <label>
+            Segment
+            <select id="segment">
+              <option value="city">Citadine</option>
+              <option value="compact">Compacte</option>
+              <option value="berline">Berline</option>
+              <option value="suv">SUV</option>
+              <option value="utility">Utilitaire</option>
+              <option value="premium">Premium</option>
+            </select>
+          </label>
+          <label>
+            Annee
+            <input id="year" type="number" min="1985" max="2030" value="2017" required>
+          </label>
+          <label>
+            Kilometrage
+            <input id="km" type="number" min="0" step="1000" value="120000" required>
+          </label>
+          <label>
+            Carburant
+            <select id="fuel">
+              <option value="essence">Essence</option>
+              <option value="diesel">Diesel</option>
+              <option value="hybride">Hybride</option>
+              <option value="electrique">Electrique</option>
+              <option value="e85">E85 / Flexfuel</option>
+            </select>
+          </label>
+          <label>
+            Boite
+            <select id="gearbox">
+              <option value="manual">Manuelle</option>
+              <option value="auto">Automatique</option>
+            </select>
+          </label>
+          <label>
+            Historique entretien
+            <select id="history">
+              <option value="full">Complet / factures</option>
+              <option value="partial">Partiel</option>
+              <option value="none">Inconnu</option>
+            </select>
+          </label>
+          <label>
+            Nombre de proprietaires
+            <input id="owners" type="number" min="1" max="10" value="2">
+          </label>
+          <label>
+            Prix annonce (EUR)
+            <input id="listedPrice" type="number" min="0" step="100" value="8900" required>
+          </label>
+          <label>
+            Frais saisis manuellement (EUR)
+            <input id="manualFees" type="number" min="0" step="50" value="0">
+          </label>
+        </div>
+
+        <label>
+          Defauts / interventions probables
+          <div class="checkboxes">
+            <label class="chip"><input type="checkbox" value="distribution"> Distribution</label>
+            <label class="chip"><input type="checkbox" value="embrayage"> Embrayage</label>
+            <label class="chip"><input type="checkbox" value="pneus"> Pneus</label>
+            <label class="chip"><input type="checkbox" value="freins"> Freins</label>
+            <label class="chip"><input type="checkbox" value="suspension"> Suspension</label>
+            <label class="chip"><input type="checkbox" value="carrosserie"> Carrosserie</label>
+            <label class="chip"><input type="checkbox" value="electronique"> Electronique</label>
+            <label class="chip"><input type="checkbox" value="ct"> CT / contre-visite</label>
+          </div>
+        </label>
+
+        <div class="grid">
+          <button class="btn-primary" type="submit">Ajouter l'annonce au radar</button>
+          <button class="btn-secondary" type="button" id="exportCsv">Exporter tableau (CSV)</button>
+          <button type="button" id="resetAll">Vider le radar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card summary">
+      <div class="metric">
+        <div class="k">Annonces analysees</div>
+        <div class="v" id="totalDeals">0</div>
+      </div>
+      <div class="metric">
+        <div class="k">Bonnes affaires (score >= 10%)</div>
+        <div class="v" id="goodDeals">0</div>
+      </div>
+      <div class="metric">
+        <div class="k">Marge moyenne estimee</div>
+        <div class="v" id="avgMargin">0 EUR</div>
+      </div>
+      <div class="metric">
+        <div class="k">Top score actuel</div>
+        <div class="v" id="bestScore">0%</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Plateforme</th>
+              <th>Vehicule</th>
+              <th>Prix annonce</th>
+              <th>Cote estimee</th>
+              <th>Frais</th>
+              <th>Cout total</th>
+              <th>Ecart</th>
+              <th>Score</th>
+              <th>Verdict</th>
+            </tr>
+          </thead>
+          <tbody id="dealsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "autoDealFinderRecordsV1";
+    const CURRENT_YEAR = new Date().getFullYear();
+
+    const segmentBase = {
+      city: 18000,
+      compact: 24000,
+      berline: 32000,
+      suv: 36000,
+      utility: 30000,
+      premium: 50000
+    };
+
+    const fuelFactor = {
+      essence: 1.0,
+      diesel: 0.95,
+      hybride: 1.08,
+      electrique: 1.12,
+      e85: 1.02
+    };
+
+    const historyFactor = {
+      full: 1.05,
+      partial: 0.98,
+      none: 0.92
+    };
+
+    const gearboxFactor = {
+      manual: 1.0,
+      auto: 1.06
+    };
+
+    const platformFees = {
+      "Leboncoin": 0,
+      "Facebook Marketplace": 0,
+      "AutoScout": 0,
+      "mobile.de": 1200
+    };
+
+    const repairCosts = {
+      distribution: 900,
+      embrayage: 850,
+      pneus: 420,
+      freins: 350,
+      suspension: 650,
+      carrosserie: 800,
+      electronique: 1000,
+      ct: 180
+    };
+
+    const el = {
+      form: document.getElementById("deal-form"),
+      dealsBody: document.getElementById("dealsBody"),
+      totalDeals: document.getElementById("totalDeals"),
+      goodDeals: document.getElementById("goodDeals"),
+      avgMargin: document.getElementById("avgMargin"),
+      bestScore: document.getElementById("bestScore"),
+      exportCsv: document.getElementById("exportCsv"),
+      resetAll: document.getElementById("resetAll")
+    };
+
+    let records = loadRecords();
+
+    function euro(value) {
+      return `${Math.round(value)} EUR`;
+    }
+
+    function estimateMarketPrice(item) {
+      const age = Math.max(0, CURRENT_YEAR - item.year);
+      const base = segmentBase[item.segment] || 22000;
+      const ageDepreciation = Math.pow(0.87, age);
+      const expectedKm = 18000 + age * 15000;
+      const kmDelta = item.km - expectedKm;
+
+      let kmFactor = 1;
+      if (kmDelta > 0) {
+        kmFactor -= Math.min(0.28, (kmDelta / 1000) * 0.0026);
+      } else {
+        kmFactor += Math.min(0.12, (Math.abs(kmDelta) / 1000) * 0.0014);
+      }
+
+      const ownersFactor = item.owners <= 2 ? 1.01 : item.owners <= 4 ? 0.97 : 0.93;
+
+      const estimated = base
+        * ageDepreciation
+        * kmFactor
+        * (fuelFactor[item.fuel] || 1)
+        * (historyFactor[item.history] || 1)
+        * (gearboxFactor[item.gearbox] || 1)
+        * ownersFactor;
+
+      return Math.max(1000, Math.round(estimated));
+    }
+
+    function computeRepairTotal(item) {
+      const checkedTotal = item.repairs.reduce((sum, key) => sum + (repairCosts[key] || 0), 0);
+      return checkedTotal + item.manualFees + (platformFees[item.platform] || 0);
+    }
+
+    function computeDeal(item) {
+      const marketPrice = estimateMarketPrice(item);
+      const repairs = computeRepairTotal(item);
+      const totalCost = item.listedPrice + repairs;
+      const delta = marketPrice - totalCost;
+      const score = (delta / marketPrice) * 100;
+
+      let verdict = "Surcote";
+      let verdictClass = "bad";
+      if (score >= 18) {
+        verdict = "Excellent deal";
+        verdictClass = "good";
+      } else if (score >= 10) {
+        verdict = "Bonne affaire";
+        verdictClass = "good";
+      } else if (score >= 3) {
+        verdict = "A negocier";
+        verdictClass = "warn";
+      }
+
+      return {
+        ...item,
+        marketPrice,
+        repairs,
+        totalCost,
+        delta,
+        score,
+        verdict,
+        verdictClass
+      };
+    }
+
+    function render() {
+      const enriched = records.map(computeDeal).sort((a, b) => b.score - a.score);
+      el.dealsBody.innerHTML = "";
+
+      enriched.forEach((row) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.platform}</td>
+          <td>${row.brand} ${row.model} (${row.year})</td>
+          <td>${euro(row.listedPrice)}</td>
+          <td>${euro(row.marketPrice)}</td>
+          <td>${euro(row.repairs)}</td>
+          <td>${euro(row.totalCost)}</td>
+          <td class="${row.delta >= 0 ? "good" : "bad"}">${euro(row.delta)}</td>
+          <td class="score ${row.verdictClass}">${row.score.toFixed(1)}%</td>
+          <td class="${row.verdictClass}">${row.verdict}</td>
+        `;
+        el.dealsBody.appendChild(tr);
+      });
+
+      updateSummary(enriched);
+      saveRecords();
+    }
+
+    function updateSummary(enriched) {
+      const total = enriched.length;
+      const goods = enriched.filter((deal) => deal.score >= 10).length;
+      const avg = total
+        ? enriched.reduce((sum, deal) => sum + Math.max(0, deal.delta), 0) / total
+        : 0;
+      const best = total ? enriched[0].score : 0;
+
+      el.totalDeals.textContent = String(total);
+      el.goodDeals.textContent = String(goods);
+      el.avgMargin.textContent = euro(avg);
+      el.bestScore.textContent = `${best.toFixed(1)}%`;
+    }
+
+    function saveRecords() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function loadRecords() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function selectedRepairs() {
+      return Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(
+        (box) => box.value
+      );
+    }
+
+    function collectFormData() {
+      return {
+        platform: document.getElementById("platform").value,
+        brand: document.getElementById("brand").value.trim(),
+        model: document.getElementById("model").value.trim(),
+        segment: document.getElementById("segment").value,
+        year: Number(document.getElementById("year").value),
+        km: Number(document.getElementById("km").value),
+        fuel: document.getElementById("fuel").value,
+        gearbox: document.getElementById("gearbox").value,
+        history: document.getElementById("history").value,
+        owners: Number(document.getElementById("owners").value || 2),
+        listedPrice: Number(document.getElementById("listedPrice").value),
+        manualFees: Number(document.getElementById("manualFees").value || 0),
+        repairs: selectedRepairs()
+      };
+    }
+
+    function toCsv(rows) {
+      const headers = [
+        "Plateforme",
+        "Marque",
+        "Modele",
+        "Annee",
+        "Prix annonce",
+        "Cote estimee",
+        "Frais",
+        "Cout total",
+        "Ecart",
+        "Score",
+        "Verdict"
+      ];
+
+      const lines = rows.map((r) => [
+        r.platform,
+        r.brand,
+        r.model,
+        r.year,
+        r.listedPrice,
+        r.marketPrice,
+        r.repairs,
+        r.totalCost,
+        r.delta,
+        r.score.toFixed(1),
+        r.verdict
+      ]);
+
+      return [headers, ...lines]
+        .map((line) =>
+          line.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(";")
+        )
+        .join("\n");
+    }
+
+    function downloadCsv() {
+      const enriched = records.map(computeDeal).sort((a, b) => b.score - a.score);
+      const csv = toCsv(enriched);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "radar-bonnes-affaires-auto.csv";
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    el.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = collectFormData();
+      if (!data.brand || !data.model || !data.listedPrice) return;
+      records.push(data);
+      event.target.reset();
+      document.getElementById("year").value = "2017";
+      document.getElementById("km").value = "120000";
+      document.getElementById("owners").value = "2";
+      document.getElementById("listedPrice").value = "8900";
+      document.getElementById("manualFees").value = "0";
+      render();
+    });
+
+    el.exportCsv.addEventListener("click", downloadCsv);
+    el.resetAll.addEventListener("click", () => {
+      records = [];
+      render();
+    });
+
+    if (records.length === 0) {
+      records.push(
+        {
+          platform: "Leboncoin",
+          brand: "Peugeot",
+          model: "308",
+          segment: "compact",
+          year: 2018,
+          km: 128000,
+          fuel: "diesel",
+          gearbox: "manual",
+          history: "partial",
+          owners: 2,
+          listedPrice: 8600,
+          manualFees: 0,
+          repairs: ["pneus", "freins"]
+        },
+        {
+          platform: "mobile.de",
+          brand: "Volkswagen",
+          model: "Golf",
+          segment: "compact",
+          year: 2019,
+          km: 103000,
+          fuel: "essence",
+          gearbox: "manual",
+          history: "full",
+          owners: 1,
+          listedPrice: 9800,
+          manualFees: 300,
+          repairs: ["ct"]
+        }
+      );
+    }
+
+    render();
+  </script>
+</body>
+</html>
