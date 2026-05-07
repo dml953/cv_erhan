@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <title>My Blog &#8211; My WordPress Blog</title>
 <meta name='robots' content='max-image-preview:large' />
 <link rel='dns-prefetch' href='//fonts.googleapis.com' />
@@ -569,6 +570,213 @@ footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 1.5rem 8%; displ
 #wpadminbar { position: fixed !important; }
 html.wp-toolbar { padding-top: 32px !important; }
 </style>
+
+<style id="human-theme-overrides">
+:root{
+  --warm-bg:#f5efe7;
+  --warm-surface:#fffaf4;
+  --warm-surface-alt:#f7efe5;
+  --warm-card:#ffffff;
+  --warm-text:#3f342b;
+  --warm-muted:#7c6a5a;
+  --warm-accent:#c86d4b;
+  --warm-accent-soft:#f3d6c9;
+  --warm-border:#e8d9cb;
+}
+
+body{
+  background:radial-gradient(circle at 85% 8%, #ffe6d8 0%, transparent 32%), linear-gradient(180deg, #f7f1ea 0%, #f2ebe2 100%) !important;
+  color:var(--warm-text) !important;
+  font-family:'DM Sans', sans-serif !important;
+}
+#page{background:transparent}
+
+nav{
+  background:rgba(255,250,244,.9);
+  border-bottom:1px solid var(--warm-border);
+  backdrop-filter:blur(12px);
+}
+.n-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;
+  color:var(--warm-text);
+}
+.n-badge{
+  color:#fff;
+  background:linear-gradient(135deg,#d88360,#c86d4b);
+  border:0;
+  border-radius:999px;
+}
+.name-acc{color:var(--warm-accent)}
+.n-links a{
+  font-family:'DM Sans',sans-serif;
+  color:var(--warm-muted);
+  font-weight:500;
+}
+.n-links a:hover,.n-links a.act{
+  color:var(--warm-accent);
+  background:var(--warm-accent-soft);
+}
+.nn{color:#b59f8d}
+
+#hero{
+  background:transparent;
+}
+.hero-scanlines,.hero-grid-bg{display:none}
+.hero-glow{
+  width:560px;
+  height:560px;
+  background:radial-gradient(circle, rgba(200,109,75,.2) 0%, transparent 70%);
+  top:-8%;
+  right:-7%;
+}
+.hero-prompt,.hero-subtitle .tag,.section-sub,.section-num,.project-id,.project-status,.terminal-title,.contact-card-label,.form-field label,.fl,.fc{
+  font-family:'DM Sans',sans-serif;
+}
+.hero-prompt{
+  color:var(--warm-accent);
+  font-weight:600;
+}
+.hero-prompt::before{content:'•';animation:none}
+#hero h1{
+  color:#33271f !important;
+  font-family:'Playfair Display',serif !important;
+  letter-spacing:0 !important;
+}
+#hero h1 .name-highlight,#hero h1 .hl{color:var(--warm-accent)!important}
+.hero-subtitle .tag{
+  color:#8f4f37;
+  background:#fbe8de;
+  border:1px solid #f3d5c5;
+  border-radius:999px;
+}
+.hero-desc{color:#6f5d4f;font-size:1rem;max-width:620px}
+
+.btn-primary,.btn-blog{
+  background:linear-gradient(135deg,#d88360,#c86d4b);
+  color:#fff;
+  box-shadow:0 10px 25px rgba(200,109,75,.25);
+  font-family:'DM Sans',sans-serif;
+}
+.btn-primary:hover,.btn-blog:hover{background:#b95f3f;transform:translateY(-1px)}
+.btn-secondary{
+  border:1px solid #d7c3b2;
+  color:#6d5b4c;
+  background:#fffaf5;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-secondary:hover{border-color:#c86d4b;color:#c86d4b}
+.hero-availability{
+  margin-top:1rem;
+  color:#8b6f5d;
+  font-size:.86rem;
+  font-weight:500;
+}
+
+.portfolio-section{background:transparent}
+.portfolio-section.alt-bg{background:var(--warm-surface-alt)}
+.section-num{
+  color:var(--warm-accent);
+  background:#fbe8de;
+  border:1px solid #f0d5c8;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  color:#2e241d;
+  font-size:1.75rem;
+}
+.section-title::before{content:'✦';color:var(--warm-accent)}
+.section-sub{color:var(--warm-muted)}
+
+.about-body p,.project-desc,.cv-entry-body,.contact-card-val{color:#685749}
+.about-body p strong{color:#33281f}
+.human-note{
+  margin-top:1.1rem;
+  background:#fffaf4;
+  border:1px solid var(--warm-border);
+  border-radius:.8rem;
+  padding:1rem 1.1rem;
+}
+.human-note h3{
+  margin:0 0 .5rem;
+  font-size:.95rem;
+  color:#5d3d2f;
+}
+.human-note p{margin-bottom:.6rem}
+.human-note ul{margin:0;padding-left:1rem;list-style:disc}
+.human-note li{color:#715f50;font-size:.86rem;line-height:1.6}
+
+.stat-box,.project-card,.contact-card,.form-field input,.form-field textarea,.skills-terminal,.cv-container,.blog-window{
+  background:var(--warm-card);
+  border:1px solid var(--warm-border);
+  box-shadow:0 10px 24px rgba(60,40,25,.06);
+}
+.stat-box:hover,.project-card:hover,.contact-card:hover{
+  border-color:#dfbca8;
+  box-shadow:0 14px 30px rgba(72,46,28,.1);
+}
+.stat-val{color:var(--warm-accent)}
+.stat-lbl{color:var(--warm-muted)}
+
+.terminal-bar,.blog-window-bar{
+  background:#f7ede2;
+  border-bottom:1px solid var(--warm-border);
+}
+.terminal-title{color:#8a6f5c}
+.skill-group{border-color:var(--warm-border)}
+.skill-group-label{color:#8f553f}
+.skill-group-label::before,.skill-group-label::after{content:''}
+.skill-tag{color:#7b695a;background:#fdf8f2;border:1px solid #eadbcd}
+.skill-tag:hover{color:#8f4f37;background:#fbe8de;border-color:#efc8b6}
+
+.project-status{border-radius:999px}
+.status-deployed{background:#e8f4e9;border:1px solid #b8dfbb;color:#2f7a34}
+.status-completed{background:#e8f0fb;border:1px solid #bfd3f3;color:#2f5f9b}
+.status-progress{background:#fff4df;border:1px solid #f3d8a8;color:#9d6b1f}
+.project-tag{font-family:'DM Sans',sans-serif;color:#7b695a;background:#f9f1e8;border:1px solid #eadacc}
+.project-tag.tag-ref{color:#8f4f37;background:#fbe8de;border-color:#efcab7}
+
+.blog-window{max-width:720px}
+.blog-url-bar,.blog-url-text{
+  color:#7a6455;
+  background:#fff;
+  border:1px solid #e7d6c8;
+  font-family:'DM Sans',sans-serif;
+}
+.blog-body{font-family:'DM Sans',sans-serif;color:#6f5c4d}
+.blog-body .ok{color:#2f7a34}
+
+.cv-container{background:#fff}
+.cv-sidebar{
+  background:linear-gradient(180deg,#f7ede3,#f2e5d8);
+  border-right:1px solid var(--warm-border);
+}
+.cv-avatar{background:linear-gradient(135deg,#d88360,#c86d4b);color:#fff}
+.cv-name,.cv-entry-title{color:#33281f}
+.cv-role,.cv-entry-meta,.cv-block-title span{color:#a35e42}
+.cv-section-title,.cv-block-title{color:#8a7465;border-color:#e9dbcf}
+.cv-contact-item,.cv-skills-list span,.cv-hobbies{color:#705e50}
+.cv-lang{background:#fce9de;border:1px solid #efcfbe;color:#8f4f37}
+.cv-entry{border-left:2px solid #e7c0ac}
+.cv-entry-body ul li::before{color:#b36b4a}
+
+.form-field input,.form-field textarea{color:#4a3d33;font-family:'DM Sans',sans-serif}
+.form-field input:focus,.form-field textarea:focus{border-color:#d0987d;box-shadow:0 0 0 3px rgba(200,109,75,.12)}
+
+footer{
+  background:#f6ede3;
+  border-top:1px solid var(--warm-border);
+}
+.fl{color:#46392f;font-family:'Playfair Display',serif}
+.fl span{color:#b76143}
+.fc{color:#8c7768}
+
+@media(max-width:700px){
+  #hero h1{font-size:clamp(2.5rem,12vw,4rem)!important}
+  .section-title{font-size:1.45rem}
+}
+</style>
+
 </head>
 <body class="home blog logged-in admin-bar no-customize-support wp-theme-erhan-portfolio">
 <script type="text/javascript">
@@ -600,12 +808,12 @@ html.wp-toolbar { padding-top: 32px !important; }
     Erhan <span class="name-acc">Dumlu</span>
   </div>
   <div class="n-links">
-    <a href="#presentation"><span class="nn">01</span> ./accueil</a>
-    <a href="#competences"><span class="nn">02</span> ./compétences</a>
-    <a href="#projets"><span class="nn">03</span> ./projets</a>
-    <a href="#blog"><span class="nn">04</span> ./blog</a>
-    <a href="#cv"><span class="nn">05</span> ./cv</a>
-    <a href="#contact"><span class="nn">06</span> ./contact</a>
+    <a href="#presentation"><span class="nn">01</span> Accueil</a>
+    <a href="#competences"><span class="nn">02</span> Compétences</a>
+    <a href="#projets"><span class="nn">03</span> Projets</a>
+    <a href="#blog"><span class="nn">04</span> Blog</a>
+    <a href="#cv"><span class="nn">05</span> CV</a>
+    <a href="#contact"><span class="nn">06</span> Contact</a>
   </div>
 </nav>
 
@@ -617,20 +825,21 @@ html.wp-toolbar { padding-top: 32px !important; }
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
   <div class="hero-content">
-    <div class="hero-prompt">BTS SIO SISR · Lycée Guy-Mollet · Arras</div>
+    <div class="hero-prompt">BTS SIO SISR · Curieux, rigoureux et motivé · Arras</div>
     <h1>Erhan<br><span class="name-highlight">Dumlu</span></h1>
     <div class="hero-subtitle">
       <span class="tag">Étudiant BTS SIO</span>
-      <span class="tag">Réseau &amp; Sécurité</span>
-      <span class="tag">Développement Web</span>
+      <span class="tag">Systèmes &amp; Réseaux</span>
+      <span class="tag">Esprit d'équipe</span>
     </div>
     <p class="hero-desc">
-      Passionné par l'informatique et les nouvelles technologies, je développe mes compétences en administration systèmes, réseaux et développement web dans le cadre de ma formation BTS SIO option SISR.
+      Passionné par l'informatique, j'aime transformer des idées en projets concrets. Je progresse chaque semaine en systèmes, réseaux et sécurité, avec une approche simple : apprendre, pratiquer et m'améliorer.
     </p>
     <div class="hero-ctas">
-      <a href="#competences" class="btn-primary">$ ./voir_competences</a>
-      <a href="#cv" class="btn-secondary">$ cat cv.pdf</a>
+      <a href="#competences" class="btn-primary">Découvrir mes compétences</a>
+      <a href="#cv" class="btn-secondary">Voir mon parcours</a>
     </div>
+    <div class="hero-availability">Disponible pour stage et projets étudiants</div>
   </div>
 </section>
 
@@ -639,7 +848,7 @@ html.wp-toolbar { padding-top: 32px !important; }
 ════════════════════════════════════════════════════════ -->
 <section class="portfolio-section alt-bg" id="presentation">
   <div class="section-header">
-    <div class="section-num">01 // whoami</div>
+    <div class="section-num">01 · Qui suis-je ?</div>
     <h2 class="section-title">Présentation</h2>
   </div>
   <div class="about-grid">
@@ -647,6 +856,15 @@ html.wp-toolbar { padding-top: 32px !important; }
       <p>Je m'appelle <strong>Erhan Dumlu</strong>, actuellement étudiant en <strong>BTS Services Informatiques aux Organisations (SIO)</strong> option SISR en première année au lycée Guy-Mollet, Arras.</p>
       <p>Passionné par l'informatique et les nouvelles technologies, je développe progressivement mes compétences dans les domaines du développement informatique, de la gestion des systèmes et des réseaux. Cette formation me permet d'acquérir des bases solides aussi bien théoriques que pratiques, à travers des projets concrets et des travaux en équipe.</p>
       <p>Curieux, motivé et sérieux, je cherche constamment à améliorer mes connaissances afin de construire un projet professionnel cohérent dans le secteur de l'informatique.</p>
+      <div class="human-note">
+        <h3>Ce qui me définit au quotidien</h3>
+        <p>Au-delà de la technique, j'accorde beaucoup d'importance à l'écoute, à la communication et à la progression continue.</p>
+        <ul>
+          <li>J'aime travailler en équipe et partager mes solutions.</li>
+          <li>Je prends le temps de documenter ce que je fais.</li>
+          <li>Je reste constant : un petit progrès chaque jour.</li>
+        </ul>
+      </div>
     </div>
     <div class="about-stats">
       <div class="stat-box">
@@ -674,9 +892,9 @@ html.wp-toolbar { padding-top: 32px !important; }
 ════════════════════════════════════════════════════════ -->
 <section class="portfolio-section" id="competences">
   <div class="section-header">
-    <div class="section-num">02 // skills</div>
+    <div class="section-num">02 · Ce que je sais faire</div>
     <h2 class="section-title">Compétences</h2>
-    <p class="section-sub">// Voici une présentation claire et professionnelle de mes compétences</p>
+    <p class="section-sub">Mes compétences techniques, développées en cours et sur des projets réels.</p>
   </div>
 
   <div class="skills-terminal">
@@ -684,7 +902,7 @@ html.wp-toolbar { padding-top: 32px !important; }
       <div class="terminal-dot red"></div>
       <div class="terminal-dot yellow"></div>
       <div class="terminal-dot green"></div>
-      <span class="terminal-title">erhan@portfolio ~ skills.sh</span>
+      <span class="terminal-title">Compétences techniques & humaines</span>
     </div>
     <div class="skills-grid">
 
@@ -766,17 +984,17 @@ html.wp-toolbar { padding-top: 32px !important; }
 ════════════════════════════════════════════════════════ -->
 <section class="portfolio-section alt-bg" id="projets">
   <div class="section-header">
-    <div class="section-num">03 // projects</div>
+    <div class="section-num">03 · Projets marquants</div>
     <h2 class="section-title">Projets</h2>
-    <p class="section-sub">// Réalisations effectuées en première année de BTS SIO</p>
+    <p class="section-sub">Des réalisations construites pas à pas pendant ma première année de BTS SIO.</p>
   </div>
 
   <div class="projects-grid">
 
     <div class="project-card">
       <div class="project-header">
-        <span class="project-id">PRJ-B01 // InfinityFree</span>
-        <span class="project-status status-deployed">DEPLOYED</span>
+        <span class="project-id">Projet B01 · InfinityFree</span>
+        <span class="project-status status-deployed">En ligne</span>
       </div>
       <h3 class="project-title">Projet InfinityFree</h3>
       <p class="project-desc">Hébergement web, installation WordPress, création du portfolio et sécurisation avec SecuPress. Gestion FTP, DNS et configuration complète.</p>
@@ -790,8 +1008,8 @@ html.wp-toolbar { padding-top: 32px !important; }
 
     <div class="project-card">
       <div class="project-header">
-        <span class="project-id">PRJ-B02 // OTA</span>
-        <span class="project-status status-completed">COMPLETED</span>
+        <span class="project-id">Projet B02 · OTA</span>
+        <span class="project-status status-completed">Terminé</span>
       </div>
       <h3 class="project-title">Projet OTA</h3>
       <p class="project-desc">Script Bash interactif pour administrer un hébergement mutualisé. Réalisé en équipe avec Nadir et Amine. Gestion users, FTP, BDD, VirtualHost Apache.</p>
@@ -806,8 +1024,8 @@ html.wp-toolbar { padding-top: 32px !important; }
 
     <div class="project-card">
       <div class="project-header">
-        <span class="project-id">PRJ-B03 // Atelier S2</span>
-        <span class="project-status status-progress">IN PROGRESS</span>
+        <span class="project-id">Projet B03 · Atelier S2</span>
+        <span class="project-status status-progress">En cours</span>
       </div>
       <h3 class="project-title">Atelier Pro S2</h3>
       <p class="project-desc">Atelier professionnel du semestre 2 : mise en pratique des compétences SISR en situation professionnelle simulée. Administration, infrastructure, déploiement.</p>
@@ -826,9 +1044,9 @@ html.wp-toolbar { padding-top: 32px !important; }
 ════════════════════════════════════════════════════════ -->
 <section class="portfolio-section" id="blog">
   <div class="section-header">
-    <div class="section-num">04 // blog</div>
-    <h2 class="section-title">Blog Technique</h2>
-    <p class="section-sub">// Billets de veille CVE, réalisations, missions de stage</p>
+    <div class="section-num">04 · Journal de bord</div>
+    <h2 class="section-title">Carnet de projets</h2>
+    <p class="section-sub">Mes retours d'expérience, mes notes techniques et mes avancées.</p>
   </div>
 
   <!-- Widget terminal -->
@@ -838,7 +1056,7 @@ html.wp-toolbar { padding-top: 32px !important; }
         <div class="dot r"></div>
         <div class="dot y"></div>
         <div class="dot g"></div>
-        <span class="blog-url-bar">curl https://icissokho.free.nf/blog</span>
+        <span class="blog-url-bar">Blog Dotclear : mes articles et retours terrain</span>
       </div>
       <div class="blog-body">
         <div class="comment">Blog technique – Dotclear</div>
@@ -854,7 +1072,7 @@ html.wp-toolbar { padding-top: 32px !important; }
           <span>URL :</span>
           https://icissokho.free.nf/blog
         </div>
-        <button class="btn-blog" onclick="openDotclear()">↗ accéder</button>
+        <button class="btn-blog" onclick="openDotclear()">Lire l'article</button>
       </div>
     </div>
   </div>
@@ -1005,9 +1223,9 @@ html.wp-toolbar { padding-top: 32px !important; }
 ════════════════════════════════════════════════════════ -->
 <section class="portfolio-section alt-bg" id="cv">
   <div class="section-header">
-    <div class="section-num">05 // curriculum vitae</div>
+    <div class="section-num">05 · Mon parcours</div>
     <h2 class="section-title">Mon CV</h2>
-    <p class="section-sub">// Parcours, formations et expériences professionnelles</p>
+    <p class="section-sub">Un aperçu clair de mes formations, expériences et centres d'intérêt.</p>
   </div>
 
   <div class="cv-container">
@@ -1112,9 +1330,9 @@ html.wp-toolbar { padding-top: 32px !important; }
 ════════════════════════════════════════════════════════ -->
 <section class="portfolio-section" id="contact">
   <div class="section-header">
-    <div class="section-num">06 // contact</div>
+    <div class="section-num">06 · Restons en contact</div>
     <h2 class="section-title">Me contacter</h2>
-    <p class="section-sub">// N'hésitez pas à me contacter pour toute opportunité ou collaboration</p>
+    <p class="section-sub">Je suis disponible pour échanger autour d'une opportunité, d'un stage ou d'un projet.</p>
   </div>
 
   <div class="contact-grid">
@@ -1162,7 +1380,7 @@ html.wp-toolbar { padding-top: 32px !important; }
         <label for="cf-message">Message</label>
         <textarea id="cf-message" name="message" placeholder="Votre message…"></textarea>
       </div>
-      <button type="submit" class="btn-primary" style="border:none; cursor:pointer; font-family:var(--font-mono);">$ ./envoyer_message</button>
+      <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Envoyer mon message</button>
     </form>
   </div>
 </section>
