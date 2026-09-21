@@ -305,8 +305,8 @@ nav {
 /* ── OVERLAY DOTCLEAR ── */
 #dco, #dotclear-overlay { display: none; position: fixed; inset: 0; z-index: 99999; overflow-y: auto; background: #f9fafb; color: #1f2937; }
 #dco.open, #dotclear-overlay.open { display: block; }
-#cv { display: none; position: fixed; inset: 0; z-index: 20000; overflow-y: auto; background: #090c10; }
-#cv.open { display: block; }
+#cv, #contact { display: none; position: fixed; inset: 0; z-index: 20000; overflow-y: auto; background: #090c10; }
+#cv.open, #contact.open { display: block; }
 .cv-topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 6%; background: rgba(9,12,16,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
 .cv-topbar-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #58a6ff; letter-spacing: 0.05em; }
 .cv-close { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #ffffff; background: transparent; border: 1px solid rgba(255,255,255,0.25); border-radius: 0.4rem; padding: 0.45rem 0.9rem; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
@@ -385,7 +385,7 @@ html.wp-toolbar { padding-top: 32px !important; }
     <a href="#projets"><span class="nn">03</span>// work</a>
     <a href="#blog"><span class="nn">04</span>// blog</a>
     <a href="#cv" onclick="openCV(event)"><span class="nn">05</span>// CV</a>
-    <a href="#contact"><span class="nn">06</span>// contact</a>
+    <a href="#contact" onclick="openContact(event)"><span class="nn">06</span>// contact</a>
   </div>
 </nav>
 
@@ -824,7 +824,12 @@ html.wp-toolbar { padding-top: 32px !important; }
 <!-- ═══════════════════════════════════════════════════════
      06 · CONTACT
 ════════════════════════════════════════════════════════ -->
-<section class="portfolio-section" id="contact">
+<div id="contact" role="dialog" aria-modal="true" aria-label="Contact">
+<div class="cv-topbar">
+  <div class="cv-topbar-title">// CONTACT · Erhan Dumlu</div>
+  <button class="cv-close" onclick="closeContact()" aria-label="Fermer la fenêtre de contact">✕ Fermer</button>
+</div>
+<section class="portfolio-section">
   <div class="section-num">06</div>
   <h2 class="section-title">// CONTACT</h2>
   <p class="section-sub">N'hésitez pas à me contacter pour toute opportunité ou collaboration</p>
@@ -881,6 +886,7 @@ html.wp-toolbar { padding-top: 32px !important; }
     </form>
   </div>
 </section>
+</div><!-- #contact -->
 
 </div><!-- #page -->
 
@@ -907,8 +913,19 @@ function closeCV() {
   document.getElementById('cv').classList.remove('open');
   document.body.classList.remove('cv-open');
 }
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCV(); });
+function openContact(e) {
+  if (e) e.preventDefault();
+  document.getElementById('contact').classList.add('open');
+  document.body.classList.add('cv-open');
+  document.getElementById('contact').scrollTop = 0;
+}
+function closeContact() {
+  document.getElementById('contact').classList.remove('open');
+  document.body.classList.remove('cv-open');
+}
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeCV(); closeContact(); } });
 if (location.hash === '#cv') openCV();
+if (location.hash === '#contact') openContact();
 </script>
 
 <script src="https://edumlu.free.nf/wp-content/themes/erhan-portfolio/js/main.js?v=1.0.1"></script>
