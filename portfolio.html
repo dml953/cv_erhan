@@ -286,6 +286,8 @@ nav {
 .project-footer-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .project-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #8b949e; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.2rem; padding: 0.15rem 0.45rem; }
 .project-tag.tag-ref { color: #d2a8ff; border-color: rgba(210, 168, 255, 0.3); }
+.project-link { display: inline-block; margin-top: 1.2rem; align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; color: #090c10; background: #ffffff; text-decoration: none; padding: 0.45rem 1rem; border-radius: 1.5rem; transition: background 0.2s, transform 0.2s; }
+.project-link:hover { background: #e6edf3; transform: translateY(-2px); }
 
 /* ── BLOG WIDGET ── */
 .blog-widget { max-width: 680px; margin: 0 auto; }
@@ -303,6 +305,13 @@ nav {
 /* ── OVERLAY DOTCLEAR ── */
 #dco, #dotclear-overlay { display: none; position: fixed; inset: 0; z-index: 99999; overflow-y: auto; background: #f9fafb; color: #1f2937; }
 #dco.open, #dotclear-overlay.open { display: block; }
+#cv { display: none; position: fixed; inset: 0; z-index: 20000; overflow-y: auto; background: #090c10; }
+#cv.open { display: block; }
+.cv-topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 6%; background: rgba(9,12,16,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.cv-topbar-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #58a6ff; letter-spacing: 0.05em; }
+.cv-close { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #ffffff; background: transparent; border: 1px solid rgba(255,255,255,0.25); border-radius: 0.4rem; padding: 0.45rem 0.9rem; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.cv-close:hover { border-color: #ffffff; background: rgba(255,255,255,0.08); }
+body.cv-open { overflow: hidden; }
 
 /* ── CV ── */
 .cv-container { display: grid; grid-template-columns: 280px 1fr; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 1rem; overflow: hidden; }
@@ -375,7 +384,7 @@ html.wp-toolbar { padding-top: 32px !important; }
     <a href="#competences"><span class="nn">02</span>// expertise</a>
     <a href="#projets"><span class="nn">03</span>// work</a>
     <a href="#blog"><span class="nn">04</span>// blog</a>
-    <a href="#cv"><span class="nn">05</span>// experience</a>
+    <a href="#cv" onclick="openCV(event)"><span class="nn">05</span>// CV</a>
     <a href="#contact"><span class="nn">06</span>// contact</a>
   </div>
 </nav>
@@ -393,7 +402,7 @@ html.wp-toolbar { padding-top: 32px !important; }
     </p>
     <div class="hero-ctas">
       <a href="#competences" class="btn-primary">MES COMPÉTENCES</a>
-      <a href="#cv" class="btn-secondary">VOIR MON CV</a>
+      <a href="#cv" class="btn-secondary" onclick="openCV(event)">VOIR MON CV</a>
     </div>
   </div>
   <a href="#presentation" class="scroll-indicator"></a>
@@ -564,6 +573,25 @@ html.wp-toolbar { padding-top: 32px !important; }
         <span class="project-tag">SISR</span>
       </div>
     </div>
+
+    <div class="project-card">
+      <div>
+        <div>
+          <span class="project-id">PRJ-B04 // Brasserie</span>
+          <span class="project-status status-deployed">DEPLOYED</span>
+        </div>
+        <h3 class="project-title">Projet Brasserie</h3>
+        <p class="project-desc">Site vitrine d'une brasserie artisanale des Hauts-de-France : présentation de l'histoire, de la brasserie, de la gamme de produits et page de contact.</p>
+      </div>
+      <div>
+        <div class="project-footer-tags">
+          <span class="project-tag">HTML</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">JavaScript</span>
+        </div>
+        <a class="project-link" href="https://brasserie.dumlu.top" target="_blank" rel="noopener">VOIR LE PROJET →</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -591,8 +619,8 @@ html.wp-toolbar { padding-top: 32px !important; }
         <div class="ok">Contenu et fiches E5 prêts à la lecture</div>
       </div>
       <div class="blog-window-footer">
-        <div style="font-family:'JetBrains Mono', monospace; font-size: 0.7rem; color: #58a6ff;">https://icissokho.free.nf/blog</div>
-        <button class="btn-blog" onclick="openDotclear()">ACQUÉRIR LES ACCÈS</button>
+        <div style="font-family:'JetBrains Mono', monospace; font-size: 0.7rem; color: #58a6ff;">https://blog.dumlu.top</div>
+        <a class="btn-blog" href="https://blog.dumlu.top/" style="text-decoration:none; display:inline-block;">ACQUÉRIR LES ACCÈS</a>
       </div>
     </div>
   </div>
@@ -687,9 +715,14 @@ html.wp-toolbar { padding-top: 32px !important; }
 <!-- ═══════════════════════════════════════════════════════
      05 · CV
 ════════════════════════════════════════════════════════ -->
-<section class="portfolio-section alt-bg" id="cv">
+<div id="cv" role="dialog" aria-modal="true" aria-label="CV">
+<div class="cv-topbar">
+  <div class="cv-topbar-title">// CV · Erhan Dumlu</div>
+  <button class="cv-close" onclick="closeCV()" aria-label="Fermer le CV">✕ Fermer</button>
+</div>
+<section class="portfolio-section alt-bg">
   <div class="section-num">05</div>
-  <h2 class="section-title">// EXPERIENCE</h2>
+  <h2 class="section-title">// CV</h2>
   <p class="section-sub">Parcours, formations et expériences professionnelles</p>
 
   <div class="cv-container">
@@ -786,6 +819,7 @@ html.wp-toolbar { padding-top: 32px !important; }
     </div>
   </div>
 </section>
+</div><!-- #cv -->
 
 <!-- ═══════════════════════════════════════════════════════
      06 · CONTACT
@@ -863,6 +897,18 @@ function openDotclear() {
 function closeDotclear() {
   document.getElementById('dotclear-overlay').classList.remove('open');
 }
+function openCV(e) {
+  if (e) e.preventDefault();
+  document.getElementById('cv').classList.add('open');
+  document.body.classList.add('cv-open');
+  document.getElementById('cv').scrollTop = 0;
+}
+function closeCV() {
+  document.getElementById('cv').classList.remove('open');
+  document.body.classList.remove('cv-open');
+}
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCV(); });
+if (location.hash === '#cv') openCV();
 </script>
 
 <script src="https://edumlu.free.nf/wp-content/themes/erhan-portfolio/js/main.js?v=1.0.1"></script>
