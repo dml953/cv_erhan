@@ -1,0 +1,33 @@
+# Jails pour les services hébergés dans les conteneurs LXC.
+#
+# Fail2Ban tourne sur l'HÔTE, pas dans les conteneurs : il lit leurs journaux
+# à travers le système de fichiers, et bannit sur le pare-feu de l'hôte.
+# Une seule instance protège ainsi tous les conteneurs, et l'attaquant est
+# arrêté avant même d'atteindre nginx.
+#
+# Les adresses vues dans ces journaux sont les vraies adresses des visiteurs
+# grâce à mod_remoteip, configuré par web-base.sh. Sans lui, toutes les
+# requêtes sembleraient venir de 10.0.3.1 et Fail2Ban bannirait le proxy.
+
+[DEFAULT]
+# Ne jamais se bannir soi-même ni bannir le réseau des conteneurs.
+ignoreip = 127.0.0.1/8 ::1 10.0.3.0/24
+
+[dotclear-auth]
+enabled  = true
+port     = http,https
+filter   = dotclear-auth
+logpath  = /var/lib/lxc/ct-blog/rootfs/var/log/apache2/blog.dumlu.top.access.log
+maxretry = 5
+findtime = 10m
+bantime  = 1h
+
+[wordpress-auth]
+# À activer une fois le conteneur brasserie en place.
+enabled  = false
+port     = http,https
+filter   = wordpress-auth
+logpath  = /var/lib/lxc/ct-brasserie/rootfs/var/log/apache2/brasserie.dumlu.top.access.log
+maxretry = 5
+findtime = 10m
+bantime  = 1h
