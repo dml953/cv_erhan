@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /contact.php
 
-Sitemap: https://mon-domaine.fr/sitemap.xml
+Sitemap: https://dumlu.top/sitemap.xml

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 // ── Configuration ────────────────────────────────────────────────────────
 const MAIL_TO        = 'dumluerhan@yahoo.com';
-const MAIL_FROM      = 'contact@mon-domaine.fr';   // doit appartenir au domaine (SPF)
+const MAIL_FROM      = 'contact@dumlu.top';   // doit appartenir au domaine (SPF)
 const MAIL_SUBJECT   = 'Portfolio — nouveau message';
 const MIN_SECONDS    = 30;                          // délai minimum entre 2 envois
 const MAX_MESSAGE    = 4000;
