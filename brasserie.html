@@ -122,7 +122,7 @@ a{color:inherit;text-decoration:none}
   transition:background .4s,border-color .4s,padding .4s;
 }
 #navbar.stuck{background:rgba(12,8,5,.94);border-bottom-color:var(--line);padding-top:.85rem;padding-bottom:.85rem}
-.nav-brand{display:flex;align-items:center;gap:.85rem}
+.nav-brand{position:relative;z-index:2;display:flex;align-items:center;gap:.85rem}
 .nav-logo{
   width:44px;height:44px;flex:none;
   background:var(--logo) center/contain no-repeat;
@@ -493,7 +493,7 @@ footer>*{position:relative;z-index:2}
 .f-logo{width:66px;height:66px;margin:0 auto 1.3rem;background:var(--logo) center/contain no-repeat;opacity:.92}
 .f-name{font-family:var(--ff-display);font-size:1.18rem;color:var(--cream);letter-spacing:.02em}
 .f-copy{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.9rem}
-.f-leg{font-size:.66rem;color:rgba(245,237,225,.34);margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--line-s);max-width:620px;margin-left:auto;margin-right:auto;letter-spacing:.04em}
+.f-leg{font-size:.7rem;color:rgba(245,237,225,.56);margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--line-s);max-width:620px;margin-left:auto;margin-right:auto;letter-spacing:.04em}
 
 /* ============================ RESPONSIVE ================== */
 @media(max-width:1024px){
@@ -526,7 +526,7 @@ footer>*{position:relative;z-index:2}
   .proc-rail{grid-template-columns:1fr}
   .proc{border-right:0;border-bottom:1px solid var(--line-s)}
   .f-row{grid-template-columns:1fr}
-  .hist-badge{width:88px;height:88px;top:-18px;right:-10px}
+  .hist-badge{width:84px;height:84px;top:-16px;right:6px}
   .nbt1{font-size:.86rem}
   .nav-logo{width:38px;height:38px}
   .hero-logo{width:64px;height:64px}
