@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  #photo {
+    max-height: 85vh; max-width: 85vw;
+    cursor: pointer; user-select: none; -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    will-change: transform;
+  }
+</style>
+</head>
+<body>
+<img id="photo" src="photo.png" alt="">
+<audio id="son" src="audio.mp3" preload="auto"></audio>
+<script>
+  const img = document.getElementById('photo');
+  const son = document.getElementById('son');
+  let anim = null;
+
+  function folie() {
+    const r = () => Math.random();
+    const frames = [];
+    let angle = 0;
+    for (let i = 0; i < 40; i++) {
+      angle += (r() * 720 - 360);
+      frames.push({
+        transform:
+          `translate(${(r() - 0.5) * 80}vw, ${(r() - 0.5) * 70}vh) ` +
+          `rotate(${angle}deg) ` +
+          `scale(${(0.4 + r() * 1.2) * (r() < 0.25 ? -1 : 1)}, ${0.4 + r() * 1.2})`
+      });
+    }
+    frames.push({ transform: 'none' });
+    return frames;
+  }
+
+  function stop() {
+    if (anim) { anim.cancel(); anim = null; }
+  }
+
+  img.addEventListener('click', () => {
+    son.currentTime = 0;
+    son.play();
+    stop();
+    const loop = () => {
+      anim = img.animate(folie(), { duration: 6000, easing: 'ease-in-out' });
+      anim.onfinish = () => { if (!son.paused && !son.ended) loop(); else anim = null; };
+    };
+    loop();
+  });
+
+  son.addEventListener('ended', stop);
+</script>
+</body>
+</html>
